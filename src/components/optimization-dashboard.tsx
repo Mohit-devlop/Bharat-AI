@@ -93,8 +93,8 @@ export function OptimizationDashboard({ onBack }: OptimizationDashboardProps) {
               <AreaChart data={yieldData}>
                 <defs>
                   <linearGradient id="colorYield" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#d97706" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#d97706" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#0284c7" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#0284c7" stopOpacity={0} />
                   </linearGradient>
                   <linearGradient id="colorAvg" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#94a3b8" stopOpacity={0.3} />
@@ -107,7 +107,7 @@ export function OptimizationDashboard({ onBack }: OptimizationDashboardProps) {
                 <Tooltip
                   contentStyle={{
                     backgroundColor: "rgba(255, 255, 255, 0.95)",
-                    border: "2px solid #d97706",
+                    border: "2px solid #0284c7",
                     borderRadius: "12px",
                   }}
                 />
@@ -122,7 +122,7 @@ export function OptimizationDashboard({ onBack }: OptimizationDashboardProps) {
                 <Area
                   type="monotone"
                   dataKey="yield"
-                  stroke="#d97706"
+                  stroke="#0284c7"
                   strokeWidth={3}
                   fillOpacity={1}
                   fill="url(#colorYield)"

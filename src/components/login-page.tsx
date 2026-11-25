@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { User, Lock, Sprout, Users, Shield, Eye, EyeOff, Globe } from "lucide-react";
+import { User, Lock, Sprout, Users, Shield, Eye, EyeOff, Globe, ArrowLeft } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { Checkbox } from "./ui/checkbox";
@@ -16,9 +16,10 @@ import {
 
 interface LoginPageProps {
   onLogin: (role: "farmer" | "superadmin") => void;
+  onBack?: () => void;
 }
 
-export function LoginPage({ onLogin }: LoginPageProps) {
+export function LoginPage({ onLogin, onBack }: LoginPageProps) {
   const { language, setLanguage, t } = useLanguage();
   const [selectedRole, setSelectedRole] = useState<"farmer" | "superadmin">("farmer");
   const [email, setEmail] = useState("");
@@ -161,6 +162,19 @@ export function LoginPage({ onLogin }: LoginPageProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
+            {onBack && (
+              <div className="mb-4">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={onBack}
+                  className="text-green-700 dark:text-green-300 hover:bg-green-50 dark:hover:bg-slate-700 rounded-xl px-3"
+                >
+                  <ArrowLeft size={18} className="mr-2" />
+                  Back to Home
+                </Button>
+              </div>
+            )}
             {/* Language Selector */}
             <div className="mb-6">
               <div className="flex items-center justify-center gap-2 mb-4">

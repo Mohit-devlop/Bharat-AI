@@ -41,6 +41,7 @@ export default function App() {
 
 function AppContent() {
   const [userRole, setUserRole] = useState<UserRole>(null);
+  const [showLogin, setShowLogin] = useState(false);
   const [currentFarmerPage, setCurrentFarmerPage] = useState<FarmerPage>("landing");
   const [currentAdminPage, setCurrentAdminPage] = useState<AdminPage>("dashboard");
   const [darkMode, setDarkMode] = useState(false);
@@ -48,6 +49,7 @@ function AppContent() {
 
   const handleLogin = (role: "farmer" | "superadmin") => {
     setUserRole(role);
+    setShowLogin(false);
     if (role === "farmer") {
       setCurrentFarmerPage("landing");
     } else {
@@ -57,15 +59,60 @@ function AppContent() {
 
   const handleLogout = () => {
     setUserRole(null);
-    setCurrentFarmerPage("login");
+    setShowLogin(false);
+    setCurrentFarmerPage("landing");
   };
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
   };
 
-  // Render Login Page if not authenticated
+  // Render Public Landing Page or Login Page if not authenticated
   if (!userRole) {
+    if (!showLogin) {
+      return (
+        <div className={`min-h-screen ${darkMode ? "dark bg-gray-900" : "bg-white"}`}>
+          {/* Floating Dark Mode Toggle */}
+          <div className="fixed bottom-6 right-6 z-50">
+            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+              <Button
+                onClick={toggleDarkMode}
+                className="w-14 h-14 rounded-full bg-amber-500 hover:bg-amber-600 text-white shadow-lg"
+                size="icon"
+              >
+                <motion.div
+                  animate={{ rotate: darkMode ? 180 : 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  {darkMode ? <Moon size={24} /> : <Sun size={24} />}
+                </motion.div>
+              </Button>
+            </motion.div>
+          </div>
+
+          <LandingPage
+            onStartPrediction={() => {
+              setUserRole("farmer");
+              setCurrentFarmerPage("input");
+            }}
+            onLoginClick={() => setShowLogin(true)}
+            onLanguageChange={(lang) => setLanguage(lang)}
+          />
+
+          <motion.footer
+            className="relative z-10 py-8 text-center text-green-700 dark:text-green-300"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1 }}
+          >
+            <p className="text-sm">
+              Made with 💚 for Indian Farmers | Bharat AI © 2026
+            </p>
+          </motion.footer>
+        </div>
+      );
+    }
+
     return (
       <div className={darkMode ? "dark" : ""}>
         <div className="relative">
@@ -86,7 +133,7 @@ function AppContent() {
               </Button>
             </motion.div>
           </div>
-          <LoginPage onLogin={handleLogin} />
+          <LoginPage onLogin={handleLogin} onBack={() => setShowLogin(false)} />
         </div>
       </div>
     );

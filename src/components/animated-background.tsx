@@ -3,7 +3,7 @@ import { Cloud, Sun, Droplets, Moon } from "lucide-react";
 
 export function AnimatedBackground() {
   return (
-    <div className="fixed inset-0 -z-10 overflow-hidden bg-gradient-to-b from-sky-100 via-emerald-50 to-amber-50 dark:from-slate-900 dark:via-slate-800 dark:to-green-950">
+    <div className="fixed inset-0 -z-10 overflow-hidden bg-gradient-to-b from-sky-100 via-emerald-50 to-cyan-50 dark:from-slate-900 dark:via-slate-800 dark:to-green-950">
       {/* Animated Sun/Moon */}
       <motion.div
         className="absolute top-10 right-20 text-amber-400 dark:text-slate-300"

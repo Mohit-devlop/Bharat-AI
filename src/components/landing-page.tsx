@@ -13,6 +13,11 @@ import {
   ShieldCheck,
   Layers,
   ArrowRight,
+  MessageCircle,
+  Users,
+  Cpu,
+  LogIn,
+  Languages,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { AnimatedBackground } from "./animated-background";
@@ -22,9 +27,14 @@ import { useLanguage } from "../contexts/language-context";
 interface LandingPageProps {
   onStartPrediction: () => void;
   onLanguageChange: (lang: string) => void;
+  onLoginClick?: () => void;
 }
 
-export function LandingPage({ onStartPrediction, onLanguageChange }: LandingPageProps) {
+export function LandingPage({
+  onStartPrediction,
+  onLanguageChange,
+  onLoginClick,
+}: LandingPageProps) {
   const { language, setLanguage, t } = useLanguage();
 
   const handleLanguageChange = (lang: string) => {
@@ -39,12 +49,12 @@ export function LandingPage({ onStartPrediction, onLanguageChange }: LandingPage
     }
   };
 
-  const capabilities = [
+  const projectModules = [
     {
       icon: TrendingUp,
       title: t("yieldPrediction"),
       description:
-        "Accurate harvest estimates per acre powered by soil health, crop variety, and regional climate models.",
+        "Predicts harvest output (tons/acre) and estimated net profit using crop variety, soil type, field size, and seasonal weather inputs.",
       metric: "95% Accuracy",
       badgeClass: "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300",
     },
@@ -52,7 +62,7 @@ export function LandingPage({ onStartPrediction, onLanguageChange }: LandingPage
       icon: Droplets,
       title: t("waterOptimization"),
       description:
-        "Precision irrigation schedules matched to crop growth stages so every drop counts during dry spells.",
+        "Generates smart irrigation timelines calibrated to local rainfall forecasts so farmers conserve water without stressing crops.",
       metric: "30% Water Saved",
       badgeClass: "bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300",
     },
@@ -60,7 +70,7 @@ export function LandingPage({ onStartPrediction, onLanguageChange }: LandingPage
       icon: FlaskConical,
       title: t("fertilizerPlans"),
       description:
-        "Balanced NPK dosage recommendations that protect soil fertility while maximizing grain quality.",
+        "Recommends split NPK fertilizer dosages across sowing, tillering, and flowering phases to protect soil health and boost yield.",
       metric: "Smart NPK Split",
       badgeClass: "bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-300",
     },
@@ -68,9 +78,25 @@ export function LandingPage({ onStartPrediction, onLanguageChange }: LandingPage
       icon: CloudRain,
       title: t("weatherInsights"),
       description:
-        "7-day rainfall, humidity, and temperature outlooks to help you plan sowing, spraying, and harvesting.",
-      metric: "Live Forecasts",
+        "Tracks temperature, humidity, and 7-day rainfall trends across agricultural regions for timely sowing and spraying decisions.",
+      metric: "7-Day Outlook",
       badgeClass: "bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300",
+    },
+    {
+      icon: MessageCircle,
+      title: "24/7 AI Farming Assistant",
+      description:
+        "Interactive multilingual help assistant that answers farmer questions on irrigation, pest control, harvest timing, and profit margins.",
+      metric: "Voice & Chat UI",
+      badgeClass: "bg-cyan-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300",
+    },
+    {
+      icon: ShieldCheck,
+      title: "Super Admin Control Panel",
+      description:
+        "Centralized management portal with analytics charts, user management, crop & soil catalogs, weather feeds, and farmer prediction logs.",
+      metric: "Full CRUD Portal",
+      badgeClass: "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300",
     },
   ];
 
@@ -79,32 +105,63 @@ export function LandingPage({ onStartPrediction, onLanguageChange }: LandingPage
       step: "01",
       title: "Enter Farm & Crop Details",
       description:
-        "Choose your crop, soil type, field size, and region in under 60 seconds using our simple guided form.",
+        "Select your crop, soil type, field size in acres, and location in under a minute using our farmer-friendly input flow.",
       icon: Layers,
     },
     {
       step: "02",
       title: "Bharat AI Analyzes Conditions",
       description:
-        "Our models combine soil properties, seasonal patterns, and weather telemetry to forecast outcomes.",
-      icon: BarChart3,
+        "Our prediction engine evaluates crop biology, soil retention, and weather telemetry to model harvest outcomes.",
+      icon: Cpu,
     },
     {
       step: "03",
-      title: "Get Your Actionable Plan",
+      title: "Get Yield & Optimization Plan",
       description:
-        "Receive expected yield, net profit projections, and step-by-step irrigation & fertilizer schedules.",
-      icon: ShieldCheck,
+        "View expected harvest tonnage, revenue projections, and interactive charts for water, fertilizer, and weather planning.",
+      icon: BarChart3,
     },
   ];
 
   const supportedCrops = [
-    { name: "Wheat", season: "Rabi", icon: "🌾" },
-    { name: "Rice", season: "Kharif", icon: "🍚" },
+    { name: "Wheat", season: "Rabi Season", icon: "🌾" },
+    { name: "Rice", season: "Kharif Season", icon: "🍚" },
     { name: "Corn", season: "Kharif / Rabi", icon: "🌽" },
-    { name: "Cotton", season: "Kharif", icon: "🌸" },
-    { name: "Sugarcane", season: "Annual", icon: "🎋" },
-    { name: "Potato", season: "Rabi", icon: "🥔" },
+    { name: "Cotton", season: "Kharif Season", icon: "🌸" },
+    { name: "Sugarcane", season: "Annual Crop", icon: "🎋" },
+    { name: "Potato", season: "Rabi Season", icon: "🥔" },
+  ];
+
+  const portals = [
+    {
+      role: "Farmer Portal",
+      icon: Sprout,
+      summary:
+        "Built for Indian farmers with simple visual inputs, local-language support, AI yield predictions, resource optimization charts, and instant chatbot help.",
+      points: [
+        "Guided Crop & Soil Input Wizard",
+        "Animated AI Yield & Revenue Forecast",
+        "Water & NPK Fertilizer Optimization Dashboard",
+        "24/7 AI Farming Help & Voice Assistant",
+      ],
+      ctaLabel: t("startNow"),
+      onAction: onStartPrediction,
+    },
+    {
+      role: "Super Admin Portal",
+      icon: Users,
+      summary:
+        "Built for agri-program administrators to monitor platform adoption, manage crop & soil datasets, update regional weather records, and review farmer history.",
+      points: [
+        "Real-Time Yield & Regional Analytics Charts",
+        "Farmer & Admin User Management",
+        "Crop, Soil Type & Season Catalog CRUD",
+        "Weather Data & System Configuration",
+      ],
+      ctaLabel: "Admin Login",
+      onAction: onLoginClick || onStartPrediction,
+    },
   ];
 
   return (
@@ -124,10 +181,10 @@ export function LandingPage({ onStartPrediction, onLanguageChange }: LandingPage
             </div>
             <div>
               <div className="font-semibold text-green-800 dark:text-green-100 leading-none">
-                {t("appName")}
+                Bharat AI
               </div>
               <div className="text-xs text-green-600 dark:text-green-300 mt-1">
-                Bharat AI Platform
+                {t("appName")}
               </div>
             </div>
           </motion.div>
@@ -136,10 +193,17 @@ export function LandingPage({ onStartPrediction, onLanguageChange }: LandingPage
           <nav className="hidden lg:flex items-center gap-6 text-sm font-medium text-green-800 dark:text-green-100">
             <button
               type="button"
-              onClick={() => scrollToSection("features")}
+              onClick={() => scrollToSection("about-project")}
               className="hover:text-green-600 dark:hover:text-green-300 transition-colors cursor-pointer"
             >
-              Features
+              About Project
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollToSection("modules")}
+              className="hover:text-green-600 dark:hover:text-green-300 transition-colors cursor-pointer"
+            >
+              Modules
             </button>
             <button
               type="button"
@@ -153,18 +217,18 @@ export function LandingPage({ onStartPrediction, onLanguageChange }: LandingPage
               onClick={() => scrollToSection("crops")}
               className="hover:text-green-600 dark:hover:text-green-300 transition-colors cursor-pointer"
             >
-              Supported Crops
+              Crops
             </button>
           </nav>
 
-          {/* Language & Quick Action */}
+          {/* Language Selector & Actions */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-3"
+            className="flex items-center gap-2"
           >
             <div className="flex items-center gap-2 bg-green-50 dark:bg-slate-700 border border-green-200 dark:border-green-700 rounded-full px-3 py-1.5">
-              <Globe className="text-green-600 dark:text-green-400" size={18} />
+              <Globe className="text-green-600 dark:text-green-400" size={16} />
               <select
                 aria-label="Select Language"
                 value={language}
@@ -180,6 +244,18 @@ export function LandingPage({ onStartPrediction, onLanguageChange }: LandingPage
               </select>
             </div>
 
+            {onLoginClick && (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onLoginClick}
+                className="border-2 border-green-600 dark:border-green-400 text-green-700 dark:text-green-100 hover:bg-green-50 dark:hover:bg-green-900 rounded-full px-4"
+              >
+                <LogIn size={16} className="mr-2" />
+                Login
+              </Button>
+            )}
+
             <Button
               onClick={onStartPrediction}
               className="hidden lg:flex bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white rounded-full px-6 shadow-sm"
@@ -194,7 +270,7 @@ export function LandingPage({ onStartPrediction, onLanguageChange }: LandingPage
       <main className="relative z-10 container mx-auto px-4 py-12 md:py-20">
         {/* Hero Section */}
         <section className="grid md:grid-cols-2 gap-12 items-center">
-          {/* Left: Hero Copy & CTA */}
+          {/* Left: Project Overview & CTA */}
           <div className="space-y-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -203,7 +279,7 @@ export function LandingPage({ onStartPrediction, onLanguageChange }: LandingPage
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 dark:bg-slate-800/90 border border-green-200 dark:border-green-700 shadow-sm text-sm font-medium text-green-700 dark:text-green-300"
             >
               <Sparkles size={16} className="text-green-600 dark:text-green-400" />
-              <span>Bharat AI • Smart Agriculture Companion</span>
+              <span>Bharat AI • Precision Agriculture Intelligence</span>
             </motion.div>
 
             <motion.h1
@@ -242,7 +318,7 @@ export function LandingPage({ onStartPrediction, onLanguageChange }: LandingPage
                 <motion.div
                   key={index}
                   className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm px-4 py-2 rounded-full border-2 border-green-200 dark:border-green-700 shadow-sm text-sm font-medium"
-                  whileHover={{ scale: 1.05, borderColor: "#f59e0b" }}
+                  whileHover={{ scale: 1.05, borderColor: "#0ea5e9" }}
                   whileTap={{ scale: 0.95 }}
                 >
                   <span className="mr-2">{feature.icon}</span>
@@ -275,7 +351,7 @@ export function LandingPage({ onStartPrediction, onLanguageChange }: LandingPage
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => scrollToSection("features")}
+                onClick={() => scrollToSection("about-project")}
                 className="border-2 border-green-600 dark:border-green-400 text-green-700 dark:text-green-100 hover:bg-green-50 dark:hover:bg-green-900 px-8 py-6 rounded-full"
                 size="lg"
               >
@@ -296,11 +372,11 @@ export function LandingPage({ onStartPrediction, onLanguageChange }: LandingPage
               </div>
               <div className="flex items-center gap-1.5">
                 <CheckCircle2 size={16} className="text-green-600 dark:text-green-400" />
-                <span>Instant AI Recommendations</span>
+                <span>Farmer & Admin Portals</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <CheckCircle2 size={16} className="text-green-600 dark:text-green-400" />
-                <span>Farmer-First Design</span>
+                <span>Interactive Analytics</span>
               </div>
             </motion.div>
           </div>
@@ -348,7 +424,7 @@ export function LandingPage({ onStartPrediction, onLanguageChange }: LandingPage
                   </div>
                   <div>
                     <div className="font-semibold text-green-800 dark:text-green-100">30% Water Saved</div>
-                    <div className="text-xs text-green-600 dark:text-green-300">Smart Irrigation Active</div>
+                    <div className="text-xs text-green-600 dark:text-green-300">AI Irrigation Active</div>
                   </div>
                 </div>
               </motion.div>
@@ -382,9 +458,9 @@ export function LandingPage({ onStartPrediction, onLanguageChange }: LandingPage
         >
           {[
             { number: "50K+", label: "Farmers Empowered", icon: "👨‍🌾" },
-            { number: "95%", label: "Forecast Accuracy", icon: "🎯" },
+            { number: "95%", label: "Prediction Accuracy", icon: "🎯" },
             { number: "30%", label: "Water Conserved", icon: "💧" },
-            { number: "40%", label: "Profit & Yield Lift", icon: "📈" },
+            { number: "40%", label: "Yield & Profit Lift", icon: "📈" },
           ].map((stat, index) => (
             <motion.div
               key={index}
@@ -401,28 +477,93 @@ export function LandingPage({ onStartPrediction, onLanguageChange }: LandingPage
           ))}
         </motion.section>
 
-        {/* Core Capabilities Section */}
-        <section id="features" className="mt-20">
+        {/* About the Project Section */}
+        <section id="about-project" className="mt-20">
+          <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-3xl p-8 border-2 border-green-100 dark:border-green-800 shadow-xl space-y-6">
+            <div className="text-center max-w-2xl mx-auto space-y-3">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-semibold tracking-widest">
+                ABOUT THE PROJECT
+              </div>
+              <h2 className="text-3xl font-semibold text-green-800 dark:text-green-100">
+                What is Bharat AI (Smart Agri Yield)?
+              </h2>
+              <p className="text-green-700 dark:text-green-200" style={{ lineHeight: 1.7 }}>
+                Bharat AI is an end-to-end smart agriculture decision platform built for Indian farmers and agricultural administrators. It transforms complex soil, crop, and weather parameters into clear harvest predictions, irrigation schedules, and fertilizer plans — accessible in 6 Indian languages.
+              </p>
+            </div>
+
+            {/* Problem vs Solution + Two Portals */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {portals.map((portal, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="bg-white dark:bg-slate-800 rounded-2xl p-6 border-2 border-green-100 dark:border-green-800 shadow-md flex flex-col justify-between space-y-6"
+                >
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3">
+                      <div className="p-3 rounded-xl bg-gradient-to-br from-green-600 to-emerald-600 text-white">
+                        <portal.icon size={22} />
+                      </div>
+                      <h3 className="text-xl font-semibold text-green-800 dark:text-green-100">
+                        {portal.role}
+                      </h3>
+                    </div>
+                    <p className="text-sm text-green-700 dark:text-green-200" style={{ lineHeight: 1.6 }}>
+                      {portal.summary}
+                    </p>
+                    <ul className="space-y-2">
+                      {portal.points.map((point, pIdx) => (
+                        <li
+                          key={pIdx}
+                          className="flex items-center gap-2 text-sm text-green-800 dark:text-green-100"
+                        >
+                          <CheckCircle2 size={16} className="text-green-600 dark:text-green-400" />
+                          <span>{point}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <Button
+                    type="button"
+                    onClick={portal.onAction}
+                    className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white rounded-xl py-6"
+                  >
+                    {portal.ctaLabel}
+                    <ArrowRight className="ml-2" size={16} />
+                  </Button>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Complete Project Modules Section */}
+        <section id="modules" className="mt-20">
           <div className="text-center max-w-2xl mx-auto mb-12 space-y-3">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-semibold tracking-widest">
-              CAPABILITIES
+              PLATFORM MODULES
             </div>
             <h2 className="text-3xl font-semibold text-green-800 dark:text-green-100">
-              Everything Your Farm Needs to Thrive
+              Complete Smart Farming Toolkit
             </h2>
             <p className="text-green-700 dark:text-green-200">
-              Built for Indian soil conditions, seasonal cycles, and practical day-to-day farm decisions.
+              Every module in Bharat AI works together to reduce input waste and increase farm profitability.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {capabilities.map((item, idx) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {projectModules.map((item, idx) => (
               <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
+                transition={{ delay: idx * 0.08 }}
                 whileHover={{ y: -6 }}
                 className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-3xl p-6 border-2 border-green-100 dark:border-green-800 shadow-lg flex flex-col justify-between"
               >
@@ -466,7 +607,7 @@ export function LandingPage({ onStartPrediction, onLanguageChange }: LandingPage
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: idx * 0.15 }}
+                  transition={{ delay: idx * 0.12 }}
                   className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-green-200 dark:border-green-700 shadow-md space-y-4"
                 >
                   <div className="flex items-center justify-between">
@@ -489,41 +630,74 @@ export function LandingPage({ onStartPrediction, onLanguageChange }: LandingPage
           </div>
         </section>
 
-        {/* Supported Crops Showcase */}
-        <section id="crops" className="mt-20">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-semibold tracking-widest mb-2">
-                MAJOR INDIAN CROPS
+        {/* Supported Crops & Multilingual Architecture */}
+        <section id="crops" className="mt-20 space-y-6">
+          <div>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-semibold tracking-widest mb-2">
+                  MAJOR INDIAN CROPS
+                </div>
+                <h2 className="text-3xl font-semibold text-green-800 dark:text-green-100">
+                  Choose Your Crop & Predict Yield Instantly
+                </h2>
               </div>
-              <h2 className="text-3xl font-semibold text-green-800 dark:text-green-100">
-                Choose Your Crop & Predict Yield Instantly
-              </h2>
+              <Button
+                onClick={onStartPrediction}
+                variant="outline"
+                className="border-2 border-green-600 dark:border-green-400 text-green-700 dark:text-green-100 hover:bg-green-50 dark:hover:bg-green-900 rounded-full"
+              >
+                Predict Now <ArrowRight className="ml-2" size={16} />
+              </Button>
             </div>
-            <Button
-              onClick={onStartPrediction}
-              variant="outline"
-              className="border-2 border-green-600 dark:border-green-400 text-green-700 dark:text-green-100 hover:bg-green-50 dark:hover:bg-green-900 rounded-full"
-            >
-              Predict Now <ArrowRight className="ml-2" size={16} />
-            </Button>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {supportedCrops.map((crop, idx) => (
+                <motion.button
+                  key={idx}
+                  type="button"
+                  onClick={onStartPrediction}
+                  whileHover={{ scale: 1.03, y: -4 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl p-6 border-2 border-green-100 dark:border-green-800 shadow-md text-center cursor-pointer transition-all hover:border-green-400"
+                >
+                  <div className="text-4xl mb-2">{crop.icon}</div>
+                  <div className="font-semibold text-green-800 dark:text-green-100">{crop.name}</div>
+                  <div className="text-xs text-green-600 dark:text-green-300 mt-1">{crop.season}</div>
+                </motion.button>
+              ))}
+            </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {supportedCrops.map((crop, idx) => (
-              <motion.button
-                key={idx}
-                type="button"
-                onClick={onStartPrediction}
-                whileHover={{ scale: 1.03, y: -4 }}
-                whileTap={{ scale: 0.97 }}
-                className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl p-6 border-2 border-green-100 dark:border-green-800 shadow-md text-center cursor-pointer transition-all hover:border-green-400"
-              >
-                <div className="text-4xl mb-2">{crop.icon}</div>
-                <div className="font-semibold text-green-800 dark:text-green-100">{crop.name}</div>
-                <div className="text-xs text-green-600 dark:text-green-300 mt-1">{crop.season}</div>
-              </motion.button>
-            ))}
+          {/* Multilingual & Technical Highlights */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-3xl p-6 border-2 border-green-100 dark:border-green-800 shadow-lg space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="p-3 rounded-xl bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300">
+                  <Languages size={22} />
+                </div>
+                <h3 className="text-xl font-semibold text-green-800 dark:text-green-100">
+                  Built for Regional Accessibility
+                </h3>
+              </div>
+              <p className="text-sm text-green-700 dark:text-green-200" style={{ lineHeight: 1.6 }}>
+                Switch seamlessly between English, हिंदी (Hindi), मराठी (Marathi), தமிழ் (Tamil), ଓଡ଼ିଆ (Odia), and বাংলা (Bengali) so farmers across India can read recommendations in their preferred language.
+              </p>
+            </div>
+
+            <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-3xl p-6 border-2 border-green-100 dark:border-green-800 shadow-lg space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="p-3 rounded-xl bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300">
+                  <Cpu size={22} />
+                </div>
+                <h3 className="text-xl font-semibold text-green-800 dark:text-green-100">
+                  Modern Architecture & UX
+                </h3>
+              </div>
+              <p className="text-sm text-green-700 dark:text-green-200" style={{ lineHeight: 1.6 }}>
+                Engineered with React 18, TypeScript, Framer Motion animations, Recharts analytics, persistent local data management, and responsive Light/Dark mode support for mobile and desktop devices.
+              </p>
+            </div>
           </div>
         </section>
 
@@ -537,20 +711,33 @@ export function LandingPage({ onStartPrediction, onLanguageChange }: LandingPage
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
             <div className="space-y-3 max-w-2xl">
               <h2 className="text-3xl font-semibold">
-                Ready to Grow Smarter This Season?
+                Ready to Grow Smarter with Bharat AI?
               </h2>
               <p className="text-green-100 text-lg">
-                Get your personalized AI crop yield forecast, irrigation schedule, and fertilizer plan in seconds.
+                Start your crop yield forecast right now or sign in to access the Farmer & Super Admin dashboards.
               </p>
             </div>
-            <Button
-              onClick={onStartPrediction}
-              size="lg"
-              className="bg-white text-green-800 hover:bg-green-50 px-8 py-6 rounded-full shadow-lg font-semibold"
-            >
-              {t("startNow")}
-              <ChevronRight className="ml-2" size={20} />
-            </Button>
+            <div className="flex flex-wrap gap-3">
+              <Button
+                onClick={onStartPrediction}
+                size="lg"
+                className="bg-white text-green-800 hover:bg-green-50 px-8 py-6 rounded-full shadow-lg font-semibold"
+              >
+                {t("startNow")}
+                <ChevronRight className="ml-2" size={20} />
+              </Button>
+              {onLoginClick && (
+                <Button
+                  type="button"
+                  onClick={onLoginClick}
+                  size="lg"
+                  variant="outline"
+                  className="border-2 border-white bg-white/10 text-white hover:bg-white hover:text-green-800 px-6 py-6 rounded-full font-semibold"
+                >
+                  Portal Login
+                </Button>
+              )}
+            </div>
           </div>
         </motion.section>
       </main>
