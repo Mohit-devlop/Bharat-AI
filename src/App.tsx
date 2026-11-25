@@ -129,7 +129,7 @@ function AppContent() {
               </Button>
             </motion.div>
           )}
-          
+
           {/* Help Button */}
           <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
             <Button
@@ -283,7 +283,7 @@ function AppContent() {
             transition={{ delay: 2 }}
           >
             <p className="text-sm">
-              Made with 💚 for Indian Farmers | Smart Agri Yield © 2025
+              Made with 💚 for Indian Farmers | Bharat AI © 2026
             </p>
           </motion.footer>
         )}
