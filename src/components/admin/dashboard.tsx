@@ -80,7 +80,7 @@ export function SuperAdminDashboard() {
 
   const cropDistribution = [
     { name: "Wheat", value: 35, color: "#f59e0b" },
-    { name: "Rice", value: 30, color: "#10b981" },
+    { name: "Rice", value: 30, color: "#ea580c" },
     { name: "Cotton", value: 20, color: "#3b82f6" },
     { name: "Others", value: 15, color: "#8b5cf6" },
   ];
@@ -191,9 +191,9 @@ export function SuperAdminDashboard() {
                 <Line
                   type="monotone"
                   dataKey="actual"
-                  stroke="#10b981"
+                  stroke="#f59e0b"
                   strokeWidth={3}
-                  dot={{ fill: "#10b981", r: 4 }}
+                  dot={{ fill: "#f59e0b", r: 4 }}
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -262,7 +262,7 @@ export function SuperAdminDashboard() {
                 />
                 <Legend />
                 <Bar yAxisId="left" dataKey="farmers" fill="#3b82f6" radius={[8, 8, 0, 0]} />
-                <Bar yAxisId="right" dataKey="yield" fill="#10b981" radius={[8, 8, 0, 0]} />
+                <Bar yAxisId="right" dataKey="yield" fill="#f59e0b" radius={[8, 8, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </Card>

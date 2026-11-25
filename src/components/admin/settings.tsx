@@ -98,8 +98,8 @@ export function Settings() {
   // Appearance Settings State
   const [appearanceSettings, setAppearanceSettings] = useState({
     defaultTheme: "light",
-    primaryColor: "#10b981",
-    accentColor: "#059669",
+    primaryColor: "#d97706",
+    accentColor: "#ea580c",
     logoUrl: "",
     faviconUrl: "",
     customCss: "",
